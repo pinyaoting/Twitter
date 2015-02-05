@@ -53,7 +53,11 @@
         NSLog(@"Got the access token!");
         [[TwitterClient sharedInstance].requestSerializer saveAccessToken:accessToken];
         
-        [TwitterClient sharedInstance] GET:<#(NSString *)#> parameters:<#(id)#> success:<#^(AFHTTPRequestOperation *operation, id responseObject)success#> failure:<#^(AFHTTPRequestOperation *operation, NSError *error)failure#>
+        [[TwitterClient sharedInstance] GET:@"1.1/account/verify_credentials.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"Current User: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failed getting current user");
+        }];
     } failure:^(NSError *error) {
         NSLog(@"Failed to get the access token!");
     }];
