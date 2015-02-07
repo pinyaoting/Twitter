@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "TwitterClient.h"
+#import "TweetsViewController.h"
 
 @interface LoginViewController ()
 
@@ -30,6 +31,7 @@
         if (user != nil) {
             // Modally presents the tweets view
             NSLog(@"Welcome to %@", user.name);
+            [self presentViewController:[[TweetsViewController alloc] init] animated:YES completion:nil];
         } else {
             // Presents Error View
         }
