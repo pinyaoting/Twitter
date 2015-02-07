@@ -23,4 +23,14 @@
     return self;
 }
 
+static User* _currentUser = nil;
+
++ (User*)currentUser {
+    return _currentUser;
+}
+
++ (void)setCurrentUser:(User *)currentUser {
+    _currentUser = currentUser;
+}
+
 @end
