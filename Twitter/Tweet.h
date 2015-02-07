@@ -18,4 +18,6 @@
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 + (NSArray *)tweetsWithArray:(NSArray *)array;
 
++ (void)tweetsFromHomeTimelineWithParams:(NSArray *)params completion:(void (^)(NSArray *tweets, NSError *error))completion;
+
 @end

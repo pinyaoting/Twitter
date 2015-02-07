@@ -7,6 +7,7 @@
 //
 
 #import "Tweet.h"
+#import "TwitterClient.h"
 
 @implementation Tweet
 
@@ -34,6 +35,10 @@
     }
     
     return tweets;
+}
+
++ (void)tweetsFromHomeTimelineWithParams:(NSArray *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
+    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:completion];
 }
 
 @end

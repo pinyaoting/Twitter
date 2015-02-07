@@ -9,7 +9,6 @@
 #import "TweetsViewController.h"
 #import "User.h"
 #import "Tweet.h"
-#import "TwitterClient.h"
 
 @interface TweetsViewController ()
 
@@ -20,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+    [Tweet tweetsFromHomeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
         for (Tweet *tweet in tweets) {
             NSLog(@"text: %@", tweet.text);
         }
