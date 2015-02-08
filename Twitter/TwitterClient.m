@@ -82,7 +82,6 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     if (statusId != nil) {
         [params setObject:statusId forKey:@"in_reply_to_status_id"];
     }
-    NSLog(@"params:%@", params[@"status"]);
     [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
         completion(tweet, nil);

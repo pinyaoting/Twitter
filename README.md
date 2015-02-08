@@ -1,4 +1,4 @@
-## Twitter [(raw)](https://gist.githubusercontent.com/timothy1ee/b9b1860c8ecb4b0b1c18/raw/2adc3f63677d81644e00245cee891eee88907767/gistfile1.md)
+## Twitter
 
 This is a basic twitter app to read and compose tweets the [Twitter API](https://apps.twitter.com/).
 
@@ -15,7 +15,7 @@ Time spent: `<Number of hours spent>`
 - [x] User can pull to refresh
 - [x] User can compose a new tweet by tapping on a compose button.
 - [x] User can tap on a tweet to view it, with controls to retweet, favorite, and reply.
-- [ ] User can retweet, favorite, and reply to the tweet directly from the timeline feed.
+- [x] User can retweet, favorite, and reply to the tweet directly from the timeline feed.
 
 #### Optional
 

@@ -14,7 +14,7 @@
 #import "TweetCell.h"
 #import "SVProgressHUD.h"
 
-@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailViewControllerDelegate>
+@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailViewControllerDelegate, TweetCellDelegate>
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
@@ -63,6 +63,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     cell.tweet = self.tweets[indexPath.row];
+    cell.delegate = self;
     [cell setLayoutMargins:UIEdgeInsetsZero];
     return cell;
 }
@@ -77,6 +78,17 @@
     
     TweetDetailViewController *vc = [[TweetDetailViewController alloc] init];
     vc.tweet = self.tweets[indexPath.row];
+    vc.delegate = self;
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nvc animated:YES completion:nil];
+}
+
+#pragma mark - Tweet delegate methods
+
+- (void)replyToStatus:(NSString *)statusId fromAuthor:(NSString *)screenName {
+    ComposeViewController *vc = [[ComposeViewController alloc] init];
+    vc.inReplyToStatusId = statusId;
+    vc.inReplyToScreenName = screenName;
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];

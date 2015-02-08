@@ -55,6 +55,7 @@
 }
 
 - (IBAction)onReply:(id)sender {
+    [self.delegate replyToStatus:self.tweet.tweetId fromAuthor:self.tweet.user.screenName];
 }
 
 - (IBAction)onRetweet:(id)sender {
