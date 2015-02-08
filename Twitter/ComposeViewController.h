@@ -8,9 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "User.h"
+#import "Tweet.h"
+
+@protocol ComposeViewControllerDelegate <NSObject>
+
+- (void)reloadTweetInView:(Tweet *)tweet;
+
+@end
 
 @interface ComposeViewController : UIViewController
 
+@property (nonatomic, weak) id<ComposeViewControllerDelegate> delegate;
 @property (nonatomic, strong) User *user;
 @property (nonatomic, strong) NSString *inReplyToStatusId;
 @property (nonatomic, strong) NSString *inReplyToScreenName;

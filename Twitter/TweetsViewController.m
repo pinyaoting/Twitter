@@ -12,13 +12,14 @@
 #import "User.h"
 #import "Tweet.h"
 #import "TweetCell.h"
+#import "SVProgressHUD.h"
 
-@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailViewControllerDelegate>
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray* tweets;
+@property (nonatomic, strong) NSMutableArray* tweets;
 
 @end
 
@@ -26,6 +27,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [SVProgressHUD showWithStatus:@"Loading"];
     
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView setLayoutMargins:UIEdgeInsetsZero];
@@ -37,7 +40,7 @@
     
     self.title = @"Home";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onTweet)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCompose)];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
@@ -74,13 +77,30 @@
     
     TweetDetailViewController *vc = [[TweetDetailViewController alloc] init];
     vc.tweet = self.tweets[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+    vc.delegate = self;
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nvc animated:YES completion:nil];
+}
+
+#pragma mark - Compose delegate methods
+
+- (void)reloadTweetInView:(Tweet *)tweet {
+    [self.tweets insertObject:tweet atIndex:0];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Detail delegate methods
+
+- (void)reloadTweetsInView:(NSArray *)tweets {
+    [self.tweets insertObjects:tweets atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, tweets.count)]];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private methods
 
-- (void)onTweet {
-    ComposeViewController *vc = [[ComposeViewController alloc] init];    
+- (void)onCompose {
+    ComposeViewController *vc = [[ComposeViewController alloc] init];
+    vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];
 }
@@ -92,7 +112,18 @@
 - (void)onRefresh {
     [Tweet tweetsFromHomeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
         [self.refreshControl endRefreshing];
-        self.tweets = tweets;
+        self.tweets = [NSMutableArray arrayWithArray:tweets];
+        [SVProgressHUD dismiss];
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)onMore {
+    NSDictionary *params = [NSDictionary dictionaryWithObject:((Tweet *)self.tweets[self.tweets.count - 1]).tweetId forKey:@"max_id"];
+    [Tweet tweetsFromHomeTimelineWithParams:params completion:^(NSArray *tweets, NSError *error) {
+        [self.refreshControl endRefreshing];
+        self.tweets = [NSMutableArray arrayWithArray:tweets];
+        [SVProgressHUD dismiss];
         [self.tableView reloadData];
     }];
 }

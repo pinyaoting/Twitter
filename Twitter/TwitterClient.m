@@ -7,7 +7,6 @@
 //
 
 #import "TwitterClient.h"
-#import "Tweet.h"
 
 NSString * const kTwitterConsumerKey = @"R5RO1q6I6fJOVsnx4NvDju1iS";
 NSString * const kTwitterConsumerSecret = @"98SpU91kQUTbk8dczzPNKa1FsoMTOYYD1S5MlxIQXn44tOBfVv";
@@ -77,7 +76,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     }];
 }
 
-- (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId {
+- (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId completion:(void (^)(Tweet *tweet, NSError *error))completion {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:status forKey:@"status"];
     if (statusId != nil) {
@@ -85,21 +84,30 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     }
     NSLog(@"params:%@", params[@"status"]);
     [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"response:%@", responseObject[@"text"]);
+        Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
+        completion(tweet, nil);
     } failure:nil];
 }
 
-- (void)retweet:(NSString *)tweetId {
+- (void)retweet:(NSString *)tweetId completion:(void (^)(Tweet *tweet, NSError *error))completion {
     [self POST:[@"1.1/statuses/retweet/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"response:%@", responseObject[@"text"]);
+        Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
+        completion(tweet, nil);
     } failure:nil];
+}
+
+- (void)untweet:(NSString *)tweetId {
+    [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
 }
 
 - (void)favorite:(NSString *)tweetId {
     NSDictionary *params = [NSDictionary dictionaryWithObject:tweetId forKey:@"id"];
-    [self POST:@"1.1/favorites/create.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"response:%@", responseObject[@"text"]);
-    } failure:nil];
+    [self POST:@"1.1/favorites/create.json" parameters:params success:nil failure:nil];
+}
+
+- (void)unfavorite:(NSString *)tweetId {
+    NSDictionary *params = [NSDictionary dictionaryWithObject:tweetId forKey:@"id"];
+    [self POST:@"1.1/favorites/destroy.json" parameters:params success:nil failure:nil];
 }
 
 @end

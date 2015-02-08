@@ -9,6 +9,12 @@
 #import "Tweet.h"
 #import "TwitterClient.h"
 
+@interface Tweet()
+
+@property (nonatomic, strong) NSString *retweetId;
+
+@end
+
 @implementation Tweet
 
 - (id)initWithDictionary:(NSDictionary *)dictionary {
@@ -20,10 +26,11 @@
         self.text = dictionary[@"text"];
         self.retweetCount = [NSString stringWithFormat:@"%@",dictionary[@"retweet_count"]];
         self.favoriteCount = [NSString stringWithFormat:@"%@",dictionary[@"favorite_count"]];
+        self.retweeted = [[NSString stringWithFormat:@"%@", dictionary[@"retweeted"]] isEqual: @"0"] ? NO : YES;
+        self.favorited = [[NSString stringWithFormat:@"%@", dictionary[@"favorited"]] isEqual: @"0"] ? NO : YES;
         NSString *createdAtString = dictionary[@"created_at"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateFormat = @"EEE MMM d HH:mm:ss Z y";
-
+        formatter.dateFormat = @"EEE MMM d HH:mm:ss Z y";        
         self.createdAt = [formatter dateFromString:createdAtString];
     }
     
@@ -31,12 +38,35 @@
 }
 
 - (void)retweet {
-    [[TwitterClient sharedInstance] retweet:_tweetId];
+    self.retweeted = YES;
+    self.retweetCount = [NSString stringWithFormat:@"%ld", [self.retweetCount integerValue] + 1];
+    [[TwitterClient sharedInstance] retweet:self.tweetId completion:^(Tweet *tweet, NSError *error) {
+        self.retweetId = tweet.tweetId;
+    }];
+}
+
+- (void)untweet {
+    self.retweeted = NO;
+    self.retweetCount = [NSString stringWithFormat:@"%ld", [self.retweetCount integerValue] - 1];
+    [[TwitterClient sharedInstance] untweet:self.retweetId];
 }
 
 - (void)favorite {
+    self.favorited = YES;
+    self.favoriteCount = [NSString stringWithFormat:@"%ld", [self.favoriteCount integerValue] + 1];
     [[TwitterClient sharedInstance] favorite:_tweetId];
 }
+
+- (void)unfavorite {
+    self.favorited = NO;
+    self.favoriteCount = [NSString stringWithFormat:@"%ld", [self.favoriteCount integerValue] - 1];
+    [[TwitterClient sharedInstance] unfavorite:_tweetId];
+}
+
++ (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId completion:(void (^)(Tweet *tweet, NSError *error))completion {
+    [[TwitterClient sharedInstance] tweets:status inReplyToStatus:statusId completion:completion];
+}
+
 
 + (NSArray *)tweetsWithArray:(NSArray *)array {
     NSMutableArray *tweets = [NSMutableArray array];
@@ -48,7 +78,7 @@
     return tweets;
 }
 
-+ (void)tweetsFromHomeTimelineWithParams:(NSArray *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
++ (void)tweetsFromHomeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
     [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:completion];
 }
 

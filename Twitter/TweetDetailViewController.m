@@ -10,17 +10,15 @@
 #import "ComposeViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSDate+DateTools.h"
+#import "TweetCell.h"
+#import "TweetDetailCell.h"
+#import "TweetCountCell.h"
+#import "TweetActionCell.h"
 
-@interface TweetDetailViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *screenNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
-@property (weak, nonatomic) IBOutlet UILabel *createdAtLabel;
-@property (weak, nonatomic) IBOutlet UILabel *retweetLabel;
-@property (weak, nonatomic) IBOutlet UILabel *favoriteLabel;
-@property (weak, nonatomic) IBOutlet UIButton *retweetButton;
-@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@interface TweetDetailViewController () <UITableViewDataSource, UITableViewDelegate, TweetActionCellDelegate, ComposeViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray* replies;
 
 @end
 
@@ -28,7 +26,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self onRefresh];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.tableView registerNib:[UINib nibWithNibName:@"TweetDetailCell" bundle:nil] forCellReuseIdentifier:@"TweetDetailCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"TweetCountCell" bundle:nil] forCellReuseIdentifier:@"TweetCountCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"TweetActionCell" bundle:nil] forCellReuseIdentifier:@"TweetActionCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"TweetCell" bundle:nil] forCellReuseIdentifier:@"TweetCell"];
+    self.replies = [NSMutableArray array];
+    self.title = @"Tweet";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:self action:@selector(onHome)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,47 +51,91 @@
     _tweet = tweet;
 }
 
-- (void)onRefresh {
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_tweet.user.profileImageUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:5.0f];
-    [self.profileImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [UIView transitionWithView:self.profileImageView duration:1.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{ self.profileImageView.image = image;
-        } completion:nil];
-    } failure:nil];
-    
-    self.nameLabel.text = _tweet.user.name;
-    self.screenNameLabel.text = _tweet.user.screenName;
-    self.createdAtLabel.text = [_tweet.createdAt timeAgoSinceNow];
-    self.contentLabel.text = _tweet.text;
-    [self.contentLabel setPreferredMaxLayoutWidth:self.contentLabel.frame.size.width];
-    self.retweetLabel.text = _tweet.retweetCount;
-    self.favoriteLabel.text = _tweet.favoriteCount;
+#pragma mark - Table view methods
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3 + self.replies.count;
 }
 
-- (IBAction)onReply:(id)sender {
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        TweetDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetDetailCell"];
+        cell.tweet = self.tweet;
+        
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        return cell;
+    } else if (indexPath.row == 1) {
+        TweetCountCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCountCell"];
+        cell.tweet = self.tweet;
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        return cell;
+    } else if (indexPath.row == 2) {
+        TweetActionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetActionCell"];
+        cell.tweet = self.tweet;
+
+        cell.delegate = self;
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+        return cell;
+    } else {
+        TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
+        cell.tweet = self.replies[indexPath.row - 3];
+        return cell;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+#pragma mark - Action delegate methods
+
+- (void)replyToStatus:(NSString *)statusId fromAuthor:(NSString *)screenName {
     ComposeViewController *vc = [[ComposeViewController alloc] init];
-    vc.inReplyToStatusId = _tweet.tweetId;
-    vc.inReplyToScreenName = _tweet.user.screenName;
+    vc.inReplyToStatusId = statusId;
+    vc.inReplyToScreenName = screenName;
+    vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];
 }
 
-- (IBAction)onRetweet:(id)sender {
-    if ([sender isSelected]) {
-        [sender setSelected:NO];
-    } else {
-        [sender setSelected:YES];
-    }
-    [_tweet retweet];
+- (void)onRetweet {
+    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    
+    // refresh TweetCountCell to reflect updated retweet count
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:NO];
+    [self.tableView endUpdates];
 }
 
-- (IBAction)onFavorite:(id)sender {
-    if ([sender isSelected]) {
-        [sender setSelected:NO];
-    } else {
-        [sender setSelected:YES];
-    }
-    [_tweet favorite];
+- (void)onFavorite {
+    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+
+    TweetCountCell *cell = (TweetCountCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        NSLog(@"favorited:%s", cell.tweet.favorited?"YES":"NO");
+    // refresh TweetCountCell to reflect updated favorite count
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:NO];
+    [self.tableView endUpdates];
+
+}
+
+#pragma mark - Compose delegate methods
+
+- (void)reloadTweetInView:(Tweet *)tweet {
+    [self.replies insertObject:tweet atIndex:0];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Private methods
+
+- (void)onHome {
+    [self.delegate reloadTweetsInView:self.replies];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
 
+@protocol TweetDetailViewControllerDelegate <NSObject>
+
+- (void)reloadTweetsInView:(NSArray *)tweets;
+
+@end
+
 @interface TweetDetailViewController : UIViewController
 
+@property (nonatomic, weak) id<TweetDetailViewControllerDelegate> delegate;
 @property (nonatomic, strong) Tweet *tweet;
 
 @end

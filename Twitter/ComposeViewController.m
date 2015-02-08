@@ -84,8 +84,10 @@
 }
 
 - (void)onTweet {
-    [_user tweets:self.tweetTextView.text inReplyToStatus:self.inReplyToStatusId];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [Tweet tweets:self.tweetTextView.text inReplyToStatus:self.inReplyToStatusId completion:^(Tweet *tweet, NSError *error) {
+        [self.delegate reloadTweetInView:tweet];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
 }
 
 @end

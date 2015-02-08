@@ -19,7 +19,6 @@ extern NSString * const UserDidLogoutNotification;
 @property (nonatomic, strong) NSString *tagline;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
-- (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId;
 
 + (User*)currentUser;
 + (void)setCurrentUser:(User *)currentUser;
