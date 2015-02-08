@@ -15,7 +15,6 @@
     self = [super init];
     
     if (self) {
-        NSLog(@"dic:%@", dictionary);
         self.user = [[User alloc] initWithDictionary:dictionary[@"user"]];
         self.text = [dictionary[@"text"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *createdAtString = dictionary[@"created_at"];

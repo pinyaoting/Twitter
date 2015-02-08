@@ -32,24 +32,22 @@
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:121.0/255.0 green:174.0/255.0 blue:1.0 alpha:1.0]];
-//    [[UINavigationBar appearance] setTranslucent:NO];
     
     User *user = [User currentUser];
     if (user != nil) {
-        NSLog(@"Welcome %@", user.name);
-        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
-        
+        [self userDidLogin];
     } else {
-        NSLog(@"Not logged in");
-        self.window.rootViewController = [[LoginViewController alloc] init];
+        [self userDidLogout];
     }
-
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
 
 - (void)userDidLogin {
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+    TweetsViewController *vc = [[TweetsViewController alloc] init];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = nvc;
 }
 
 - (void)userDidLogout {
