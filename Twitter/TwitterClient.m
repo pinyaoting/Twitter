@@ -39,7 +39,6 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     
     [self.requestSerializer removeAccessToken];
     [self fetchRequestTokenWithPath:@"oauth/request_token" method:@"GET" callbackURL:[NSURL URLWithString:@"cptwitterdemo://oauth"] scope:nil success:^(BDBOAuth1Credential *requestToken) {
-        NSLog(@"got the request token!");
         
         NSURL *authURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/oauth/authorize?oauth_token=%@", requestToken.token]];
         [[UIApplication sharedApplication] openURL:authURL];
@@ -52,13 +51,13 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
 - (void)openURL:(NSURL *)url {
     [self fetchAccessTokenWithPath:@"oauth/access_token" method:@"POST" requestToken:[BDBOAuth1Credential credentialWithQueryString:url.query] success:^(BDBOAuth1Credential *accessToken) {
-        NSLog(@"Got the access token!");
+
         [self.requestSerializer saveAccessToken:accessToken];
         
         [self GET:@"1.1/account/verify_credentials.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             User *user = [[User alloc] initWithDictionary:responseObject];
             [User setCurrentUser:user];
-            NSLog(@"Current User: %@", user.name);
+
             self.loginCompletion(user, nil);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failed getting current user");
@@ -76,6 +75,15 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         completion(nil, error);
     }];
+}
+
+//statuses/update
+- (void)postStatus:(NSString *)status {
+    NSDictionary *params = [NSDictionary dictionaryWithObject:status forKey:@"status"];
+    NSLog(@"params:%@", params[@"status"]);
+    [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"response:%@", responseObject[@"text"]);
+    } failure:nil];
 }
 
 @end

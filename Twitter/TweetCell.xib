@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="200" id="KGk-i7-Jjw" customClass="TweetCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IiQ-Qy-nJ1">
+                        <rect key="frame" x="16" y="16" width="48" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="S2j-jJ-tLV"/>
+                            <constraint firstAttribute="height" constant="48" id="sDB-35-xsj"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Timothy Lee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HgY-ci-vMg">
+                        <rect key="frame" x="72" y="16" width="76" height="16"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jjm-Rb-fk2">
+                        <rect key="frame" x="290" y="18" width="14" height="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@timothy1ee" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyJ-9J-HfG">
+                        <rect key="frame" x="156" y="18" width="67" height="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="&quot;Am I supposed to be able to understand you because it sounds like gibberish&quot; - one of my students. #ouch" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTa-7b-aG9">
+                        <rect key="frame" x="72" y="36" width="232" height="82"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Jjm-Rb-fk2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jyJ-9J-HfG" secondAttribute="trailing" constant="8" id="3kV-RI-qEN"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="IiQ-Qy-nJ1" secondAttribute="bottom" constant="8" id="5Ap-r6-qoi"/>
+                    <constraint firstItem="jyJ-9J-HfG" firstAttribute="leading" secondItem="HgY-ci-vMg" secondAttribute="trailing" constant="8" id="7Ur-4T-Y1q"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="NTa-7b-aG9" secondAttribute="trailing" constant="8" id="D2m-5v-XeD"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Jjm-Rb-fk2" secondAttribute="trailing" constant="8" id="D78-Tu-ASe"/>
+                    <constraint firstItem="IiQ-Qy-nJ1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="EFC-fh-WEU"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="NTa-7b-aG9" secondAttribute="bottom" constant="8" id="Hv8-CU-YJI"/>
+                    <constraint firstItem="HgY-ci-vMg" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="PoK-vQ-XI1"/>
+                    <constraint firstItem="IiQ-Qy-nJ1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="ZN4-Me-OtA"/>
+                    <constraint firstItem="NTa-7b-aG9" firstAttribute="top" secondItem="HgY-ci-vMg" secondAttribute="bottom" constant="4" id="lGx-gd-3kA"/>
+                    <constraint firstItem="HgY-ci-vMg" firstAttribute="leading" secondItem="IiQ-Qy-nJ1" secondAttribute="trailing" constant="8" id="rds-lo-hnX"/>
+                    <constraint firstItem="NTa-7b-aG9" firstAttribute="leading" secondItem="IiQ-Qy-nJ1" secondAttribute="trailing" constant="8" id="uNG-nO-C4l"/>
+                    <constraint firstItem="Jjm-Rb-fk2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="uvo-qC-2e8"/>
+                    <constraint firstItem="jyJ-9J-HfG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="zD2-Oz-Ebm"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="contentLabel" destination="NTa-7b-aG9" id="Jpj-bz-1iv"/>
+                <outlet property="createdAtLabel" destination="Jjm-Rb-fk2" id="Geo-ua-tlb"/>
+                <outlet property="nameLabel" destination="HgY-ci-vMg" id="rBh-hl-Ubp"/>
+                <outlet property="profileImageView" destination="IiQ-Qy-nJ1" id="1r1-76-fsp"/>
+                <outlet property="screenNameLabel" destination="jyJ-9J-HfG" id="NsJ-qD-f4c"/>
+            </connections>
+            <point key="canvasLocation" x="413" y="365"/>
+        </tableViewCell>
+    </objects>
+</document>

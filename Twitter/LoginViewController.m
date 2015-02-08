@@ -18,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,21 +30,12 @@
         if (user != nil) {
             // Modally presents the tweets view
             NSLog(@"Welcome to %@", user.name);
-            [self presentViewController:[[TweetsViewController alloc] init] animated:YES completion:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLoginNotification object:nil];
         } else {
             // Presents Error View
         }
     }];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

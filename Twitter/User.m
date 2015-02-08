@@ -26,13 +26,18 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     if (self) {
         self.dictionary = dictionary;
         self.name = dictionary[@"name"];
-        self.screenname = dictionary[@"screen_name"];
+        self.screenName = [@"@" stringByAppendingString:dictionary[@"screen_name"]];
         self.profileImageUrl = dictionary[@"profile_image_url"];
         self.tagline = dictionary[@"description"];
     }
     
     return self;
 }
+
+- (void)tweetsWithStatus:(NSString *)status {
+    [[TwitterClient sharedInstance] postStatus:status];
+}
+
 
 static User* _currentUser = nil;
 

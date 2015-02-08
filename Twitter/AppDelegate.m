@@ -24,19 +24,32 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
+    // register notification observer
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogout) name:UserDidLogoutNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin) name:UserDidLoginNotification object:nil];
+    
+    // set navigation bar appearance
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:121.0/255.0 green:174.0/255.0 blue:1.0 alpha:1.0]];
+//    [[UINavigationBar appearance] setTranslucent:NO];
     
     User *user = [User currentUser];
     if (user != nil) {
         NSLog(@"Welcome %@", user.name);
-        self.window.rootViewController = [[TweetsViewController alloc] init];
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+        
     } else {
         NSLog(@"Not logged in");
         self.window.rootViewController = [[LoginViewController alloc] init];
     }
-    
+
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)userDidLogin {
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
 }
 
 - (void)userDidLogout {

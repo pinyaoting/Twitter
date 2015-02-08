@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TweetsViewController">
             <connections>
+                <outlet property="tableView" destination="I5C-Yh-ykk" id="BfH-7a-fBZ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,20 +15,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="our-XN-W4x">
-                    <rect key="frame" x="136" y="169" width="49" height="30"/>
-                    <state key="normal" title="Logout">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="onLogout:" destination="-1" eventType="touchUpInside" id="DN3-01-Kjc"/>
-                    </connections>
-                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="I5C-Yh-ykk">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="our-XN-W4x" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="169" id="73a-h4-1tF"/>
-                <constraint firstAttribute="centerX" secondItem="our-XN-W4x" secondAttribute="centerX" id="Odf-zL-dvA"/>
+                <constraint firstItem="I5C-Yh-ykk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="BHd-zU-Gxr"/>
+                <constraint firstAttribute="bottom" secondItem="I5C-Yh-ykk" secondAttribute="bottom" id="KQ2-1C-KAU"/>
+                <constraint firstAttribute="trailing" secondItem="I5C-Yh-ykk" secondAttribute="trailing" id="YGK-UK-Sgp"/>
+                <constraint firstItem="I5C-Yh-ykk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ncR-YS-nrX"/>
             </constraints>
             <point key="canvasLocation" x="413" y="314"/>
         </view>

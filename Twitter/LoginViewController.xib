@@ -14,25 +14,66 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T3f-IJ-fRa">
-                    <rect key="frame" x="100" y="100" width="121" height="30"/>
-                    <state key="normal" title="Login with Twitter">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sakura.png" translatesAutoresizingMaskIntoConstraints="NO" id="7LC-WM-uoU">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WD-TO-FoM">
+                    <rect key="frame" x="30" y="100" width="63" height="29"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Twitter." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qt-PX-MrG">
+                    <rect key="frame" x="30" y="134" width="150" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s6h-xl-Zaf">
+                    <rect key="frame" x="0.0" y="493" width="320" height="75"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="8N4-N0-nus"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bi-GK-5TB">
+                    <rect key="frame" x="20" y="518" width="280" height="30"/>
+                    <color key="backgroundColor" red="0.2475077870794401" green="0.54104231660460833" blue="1" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Sign In">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="onLogin:" destination="-1" eventType="touchUpInside" id="hg4-UC-Ivr"/>
+                        <action selector="onLogin:" destination="-1" eventType="touchUpInside" id="xML-G2-TS7"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="T3f-IJ-fRa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="100" id="VAJ-Qh-g43"/>
-                <constraint firstItem="T3f-IJ-fRa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="kM5-8j-4L9"/>
-                <constraint firstAttribute="trailing" secondItem="T3f-IJ-fRa" secondAttribute="trailing" constant="99" id="pgE-uQ-p0D"/>
+                <constraint firstAttribute="trailing" secondItem="7LC-WM-uoU" secondAttribute="trailing" id="2dU-bW-BML"/>
+                <constraint firstItem="4qt-PX-MrG" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="476-s4-tA1"/>
+                <constraint firstItem="7LC-WM-uoU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8y0-xu-W8k"/>
+                <constraint firstAttribute="trailing" secondItem="s6h-xl-Zaf" secondAttribute="trailing" id="GEO-OC-OQr"/>
+                <constraint firstItem="7WD-TO-FoM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Q4e-v7-rNo"/>
+                <constraint firstAttribute="bottom" secondItem="7LC-WM-uoU" secondAttribute="bottom" id="T5p-B5-a60"/>
+                <constraint firstItem="7WD-TO-FoM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="UFO-JR-fyH"/>
+                <constraint firstItem="s6h-xl-Zaf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XWR-7r-mll"/>
+                <constraint firstItem="7LC-WM-uoU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Z54-Li-btI"/>
+                <constraint firstItem="4qt-PX-MrG" firstAttribute="top" secondItem="7WD-TO-FoM" secondAttribute="bottom" constant="5" id="eMi-Cm-8Yz"/>
+                <constraint firstItem="4bi-GK-5TB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="h6f-1h-UR0"/>
+                <constraint firstAttribute="bottom" secondItem="4bi-GK-5TB" secondAttribute="bottom" constant="20" id="jfA-Gr-P2b"/>
+                <constraint firstAttribute="bottom" secondItem="s6h-xl-Zaf" secondAttribute="bottom" id="jfd-BH-YdP"/>
+                <constraint firstAttribute="trailing" secondItem="4bi-GK-5TB" secondAttribute="trailing" constant="20" id="wdT-94-G6c"/>
             </constraints>
             <point key="canvasLocation" x="413" y="386"/>
         </view>
     </objects>
+    <resources>
+        <image name="sakura.png" width="1024" height="683"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

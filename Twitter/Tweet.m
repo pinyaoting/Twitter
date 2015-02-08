@@ -15,8 +15,9 @@
     self = [super init];
     
     if (self) {
+        NSLog(@"dic:%@", dictionary);
         self.user = [[User alloc] initWithDictionary:dictionary[@"user"]];
-        self.text = dictionary[@"text"];
+        self.text = [dictionary[@"text"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *createdAtString = dictionary[@"created_at"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"EEE MMM d HH:mm:ss Z y";

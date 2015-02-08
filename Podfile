@@ -1,3 +1,8 @@
 platform :ios, "8.0"
 
-pod "BDBOAuth1Manager"
+inhibit_all_warnings!
+
+pod 'AFNetworking'
+pod 'BDBOAuth1Manager'
+pod 'DateTools'
+pod 'SVProgressHUD'
