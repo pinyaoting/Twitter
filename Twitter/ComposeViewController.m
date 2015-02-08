@@ -9,12 +9,16 @@
 #import "ComposeViewController.h"
 #import "UIImageView+AFNetworking.h"
 
+NSInteger const MAX_CHARACTEERS = 255;
+
 @interface ComposeViewController () <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *screenNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
 
+@property (nonatomic, strong) UILabel *countdownLabel;
+@property (nonatomic, assign) NSInteger charactersLeft;
 @property (nonatomic, assign) BOOL startedTyping;
 
 @end
@@ -38,9 +42,20 @@
     }
     [self.tweetTextView becomeFirstResponder];
     
+    
     // init navigation bar
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStylePlain target:self action:@selector(onTweet)];
+    self.charactersLeft = MAX_CHARACTEERS;
+    self.countdownLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 50)];
+    self.countdownLabel.text = [NSString stringWithFormat:@"%ld", self.charactersLeft];
+    self.countdownLabel.font = [UIFont systemFontOfSize:13];
+    self.countdownLabel.textColor = [UIColor whiteColor];
+    
+    UIBarButtonItem *wordCountWrapper = [[UIBarButtonItem alloc] initWithCustomView:self.countdownLabel];
+    UIBarButtonItem *tweetButton = [[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStylePlain target:self action:@selector(onTweet)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel)];
+
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    self.navigationItem.rightBarButtonItems = @[tweetButton, wordCountWrapper];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,7 +78,15 @@
     }
     
     NSUInteger newLength = textView.text.length + text.length - range.length;
-    return (newLength > 255) ? NO : YES;
+    if (MAX_CHARACTEERS < newLength) {
+        return NO;
+    }
+    self.charactersLeft = MAX_CHARACTEERS - newLength;
+    self.countdownLabel.text = [NSString stringWithFormat:@"%ld", self.charactersLeft];
+    if (self.charactersLeft == 0) {
+        self.countdownLabel.textColor = [UIColor redColor];
+    }
+    return YES;
 }
 
 - (void)setUser:(User *)user {
