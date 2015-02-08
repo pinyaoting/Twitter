@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray* tweets;
 
+@property (nonatomic, assign) BOOL isInBuffer;
+
 @end
 
 @implementation TweetsViewController
@@ -45,6 +47,9 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
+    self.isInBuffer = YES;
+    self.tweets = [[NSMutableArray alloc] initWithCapacity:1000];
     
     [self onRefresh];
 }
@@ -81,6 +86,18 @@
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat actualPosition = scrollView.contentOffset.y;
+    CGFloat contentHeight = scrollView.contentSize.height - 600;
+    if (actualPosition >= contentHeight) {
+        if (self.isInBuffer) {
+            return;
+        }
+        self.isInBuffer = YES;
+        [self moreTweets];
+    }
 }
 
 #pragma mark - Tweet delegate methods
@@ -123,19 +140,21 @@
 
 - (void)onRefresh {
     [Tweet tweetsFromHomeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+        self.isInBuffer = NO;
         [self.refreshControl endRefreshing];
-        self.tweets = [NSMutableArray arrayWithArray:tweets];
         [SVProgressHUD dismiss];
+        [self.tweets addObjectsFromArray:tweets];
         [self.tableView reloadData];
     }];
 }
 
-- (void)onMore {
+- (void)moreTweets {
+    [SVProgressHUD showWithStatus:@"Loading"];
     NSDictionary *params = [NSDictionary dictionaryWithObject:((Tweet *)self.tweets[self.tweets.count - 1]).tweetId forKey:@"max_id"];
     [Tweet tweetsFromHomeTimelineWithParams:params completion:^(NSArray *tweets, NSError *error) {
-        [self.refreshControl endRefreshing];
-        self.tweets = [NSMutableArray arrayWithArray:tweets];
         [SVProgressHUD dismiss];
+        self.isInBuffer = NO;
+        [self.tweets addObjectsFromArray:tweets];
         [self.tableView reloadData];
     }];
 }
