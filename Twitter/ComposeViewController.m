@@ -25,9 +25,20 @@
     [super viewDidLoad];
     
     self.user = [User currentUser];
+    
+    // init text view
     self.tweetTextView.delegate = self;
     self.startedTyping = NO;
+    if (self.inReplyToScreenName != nil) {
+        self.tweetTextView.textColor = [UIColor blackColor];
+        self.tweetTextView.text = [self.inReplyToScreenName stringByAppendingString:@" "];
+        self.startedTyping = YES;
+    } else {
+        self.tweetTextView.selectedRange = NSMakeRange(0, 0);
+    }
+    [self.tweetTextView becomeFirstResponder];
     
+    // init navigation bar
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStylePlain target:self action:@selector(onTweet)];
 }
@@ -37,17 +48,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-    if (self.startedTyping == YES) {
-        return;
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if (self.startedTyping == NO) {
+        self.startedTyping = YES;
+        textView.textColor = [UIColor blackColor];
+        textView.text = @"";
+        self.startedTyping = YES;
+        return YES;
     }
     
-    textView.textColor = [UIColor blackColor];
-    textView.text = @"";
-    self.startedTyping = YES;
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if(range.length + range.location > textView.text.length)
     {
         return NO;
@@ -75,7 +84,7 @@
 }
 
 - (void)onTweet {
-    [_user tweetsWithStatus:self.tweetTextView.text];
+    [_user tweets:self.tweetTextView.text inReplyToStatus:self.inReplyToStatusId];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

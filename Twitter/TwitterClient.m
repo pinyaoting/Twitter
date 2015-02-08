@@ -77,11 +77,27 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     }];
 }
 
-//statuses/update
-- (void)postStatus:(NSString *)status {
-    NSDictionary *params = [NSDictionary dictionaryWithObject:status forKey:@"status"];
+- (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:status forKey:@"status"];
+    if (statusId != nil) {
+        [params setObject:statusId forKey:@"in_reply_to_status_id"];
+    }
     NSLog(@"params:%@", params[@"status"]);
     [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"response:%@", responseObject[@"text"]);
+    } failure:nil];
+}
+
+- (void)retweet:(NSString *)tweetId {
+    [self POST:[@"1.1/statuses/retweet/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"response:%@", responseObject[@"text"]);
+    } failure:nil];
+}
+
+- (void)favorite:(NSString *)tweetId {
+    NSDictionary *params = [NSDictionary dictionaryWithObject:tweetId forKey:@"id"];
+    [self POST:@"1.1/favorites/create.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"response:%@", responseObject[@"text"]);
     } failure:nil];
 }

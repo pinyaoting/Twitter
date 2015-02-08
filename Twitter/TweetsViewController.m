@@ -8,6 +8,7 @@
 
 #import "TweetsViewController.h"
 #import "ComposeViewController.h"
+#import "TweetDetailViewController.h"
 #import "User.h"
 #import "Tweet.h"
 #import "TweetCell.h"
@@ -66,6 +67,14 @@
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewAutomaticDimension;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    TweetDetailViewController *vc = [[TweetDetailViewController alloc] init];
+    vc.tweet = self.tweets[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Private methods

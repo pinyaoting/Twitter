@@ -12,5 +12,7 @@
 @interface ComposeViewController : UIViewController
 
 @property (nonatomic, strong) User *user;
+@property (nonatomic, strong) NSString *inReplyToStatusId;
+@property (nonatomic, strong) NSString *inReplyToScreenName;
 
 @end

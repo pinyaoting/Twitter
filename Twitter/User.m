@@ -34,10 +34,9 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
     return self;
 }
 
-- (void)tweetsWithStatus:(NSString *)status {
-    [[TwitterClient sharedInstance] postStatus:status];
+- (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId {
+    [[TwitterClient sharedInstance] tweets:status inReplyToStatus:statusId];
 }
-
 
 static User* _currentUser = nil;
 
