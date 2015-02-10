@@ -42,13 +42,22 @@
     self.retweetCount = [NSString stringWithFormat:@"%ld", [self.retweetCount integerValue] + 1];
     [[TwitterClient sharedInstance] retweet:self.tweetId completion:^(Tweet *tweet, NSError *error) {
         self.retweetId = tweet.tweetId;
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:tweet.tweetId forKey:self.tweetId];
     }];
 }
 
 - (void)untweet {
     self.retweeted = NO;
     self.retweetCount = [NSString stringWithFormat:@"%ld", [self.retweetCount integerValue] - 1];
-    [[TwitterClient sharedInstance] untweet:self.retweetId origTweet:self];
+    NSString *retweetId = self.retweetId;
+    if (retweetId == nil) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        retweetId = [defaults objectForKey:self.tweetId];
+        NSLog(@"retweetId:%@", retweetId);
+    }
+    [[TwitterClient sharedInstance] untweet:retweetId origTweet:self];
 }
 
 - (void)favorite {
