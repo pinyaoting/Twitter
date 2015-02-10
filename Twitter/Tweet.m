@@ -55,7 +55,9 @@
     if (retweetId == nil) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         retweetId = [defaults objectForKey:self.tweetId];
-        NSLog(@"retweetId:%@", retweetId);
+        if (retweetId != nil) {
+            [defaults removeObjectForKey:self.tweetId];
+        }
     }
     [[TwitterClient sharedInstance] untweet:retweetId origTweet:self];
 }
@@ -88,7 +90,7 @@
 }
 
 + (void)tweetsFromHomeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
-    [[TwitterClient sharedInstance] homeTimelineWithParams:nil completion:completion];
+    [[TwitterClient sharedInstance] homeTimelineWithParams:params completion:completion];
 }
 
 @end

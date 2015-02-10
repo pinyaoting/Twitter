@@ -49,7 +49,6 @@
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     
     self.isInBuffer = YES;
-    self.tweets = [[NSMutableArray alloc] initWithCapacity:1000];
     
     [self onRefresh];
 }
@@ -88,10 +87,9 @@
     [self presentViewController:nvc animated:YES completion:nil];
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat actualPosition = scrollView.contentOffset.y;
-    CGFloat contentHeight = scrollView.contentSize.height - 600;
-    if (actualPosition >= contentHeight) {
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == self.tweets.count - 1) {
+        // make a call
         if (self.isInBuffer) {
             return;
         }
@@ -143,17 +141,18 @@
         self.isInBuffer = NO;
         [self.refreshControl endRefreshing];
         [SVProgressHUD dismiss];
-        [self.tweets addObjectsFromArray:tweets];
+        self.tweets = [NSMutableArray arrayWithArray:tweets];
         [self.tableView reloadData];
     }];
 }
 
 - (void)moreTweets {
     [SVProgressHUD showWithStatus:@"Loading"];
-    NSDictionary *params = [NSDictionary dictionaryWithObject:((Tweet *)self.tweets[self.tweets.count - 1]).tweetId forKey:@"max_id"];
-    [Tweet tweetsFromHomeTimelineWithParams:params completion:^(NSArray *tweets, NSError *error) {
-        [SVProgressHUD dismiss];
+    NSInteger size = self.tweets.count - 1;
+    Tweet *lastTweet = self.tweets[size];
+    [Tweet tweetsFromHomeTimelineWithParams:@{@"max_id": lastTweet.tweetId} completion:^(NSArray *tweets, NSError *error) {
         self.isInBuffer = NO;
+        [SVProgressHUD dismiss];
         [self.tweets addObjectsFromArray:tweets];
         [self.tableView reloadData];
     }];

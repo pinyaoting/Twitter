@@ -11,7 +11,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Twitter_logo_white_48.png" translatesAutoresizingMaskIntoConstraints="NO" id="y6u-dB-8B1">
-                    <rect key="frame" x="216" y="150" width="48" height="48"/>
+                    <rect key="frame" x="216" y="216" width="48" height="48"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="5YY-uv-6oP"/>
                         <constraint firstAttribute="width" constant="48" id="qLy-xQ-1W9"/>
@@ -21,7 +21,7 @@
             <color key="backgroundColor" red="0.50980392159999999" green="0.68235294120000001" blue="0.98431372549999996" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="y6u-dB-8B1" secondAttribute="centerX" id="L2a-nR-eq3"/>
-                <constraint firstItem="y6u-dB-8B1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="150" id="PBo-VY-jty"/>
+                <constraint firstAttribute="centerY" secondItem="y6u-dB-8B1" secondAttribute="centerY" id="NzS-rQ-gAC"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
