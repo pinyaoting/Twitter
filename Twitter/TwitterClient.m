@@ -95,8 +95,22 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     } failure:nil];
 }
 
-- (void)untweet:(NSString *)tweetId {
-    [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
+- (void)untweet:(NSString *)tweetId origTweet:(Tweet *)origTweet {
+    // un-retweeting in same session which the tweet got re-tweeted, so re-tweetId is availible for un-retweet.
+    if (tweetId != nil) {
+        [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
+        return;
+    }
+
+    // try finding the re-tweeted tweet from user timeline
+    [self GET:@"1.1/statuses/user_timeline.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *tweets = [Tweet tweetsWithArray:responseObject];
+        for (Tweet *tweet in tweets) {
+            if ([tweet.text isEqualToString:origTweet.text]) {
+                [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweet.tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
+            }
+        }
+    } failure:nil];
 }
 
 - (void)favorite:(NSString *)tweetId {

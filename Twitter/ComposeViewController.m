@@ -9,7 +9,7 @@
 #import "ComposeViewController.h"
 #import "UIImageView+AFNetworking.h"
 
-NSInteger const MAX_CHARACTEERS = 255;
+NSInteger const MAX_CHARACTEERS = 140;
 
 @interface ComposeViewController () <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;

@@ -48,7 +48,7 @@
 - (void)untweet {
     self.retweeted = NO;
     self.retweetCount = [NSString stringWithFormat:@"%ld", [self.retweetCount integerValue] - 1];
-    [[TwitterClient sharedInstance] untweet:self.retweetId];
+    [[TwitterClient sharedInstance] untweet:self.retweetId origTweet:self];
 }
 
 - (void)favorite {
