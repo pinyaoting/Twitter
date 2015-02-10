@@ -98,10 +98,16 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 - (void)untweet:(NSString *)tweetId origTweet:(Tweet *)origTweet {
     // un-retweeting in same session which the tweet got re-tweeted, so re-tweetId is availible for un-retweet.
     if (tweetId != nil) {
-        [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
+        [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self unretweetByLookup:origTweet];
+        }];
         return;
+    } else {
+        [self unretweetByLookup:origTweet];
     }
+}
 
+- (void)unretweetByLookup:(Tweet *)origTweet {
     // try finding the re-tweeted tweet from user timeline
     [self GET:@"1.1/statuses/user_timeline.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *tweets = [Tweet tweetsWithArray:responseObject];
