@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BurgerViewController : UIViewController
+@interface MainViewController : UIViewController
 
 @end

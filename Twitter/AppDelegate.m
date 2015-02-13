@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "TweetsViewController.h"
-#import "BurgerViewController.h"
+#import "MainViewController.h"
 #import "TwitterClient.h"
 #import "User.h"
 #import "Tweet.h"
@@ -46,7 +46,7 @@
 }
 
 - (void)userDidLogin {
-    BurgerViewController *vc = [[BurgerViewController alloc] init];
+    MainViewController *vc = [[MainViewController alloc] init];
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nvc;
 }
