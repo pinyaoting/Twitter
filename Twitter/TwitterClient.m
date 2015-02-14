@@ -85,6 +85,15 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     }];
 }
 
+- (void)userDetailsWithScreenName:(NSString *)screenName completion:(void (^)(User *user, NSError *error))completion {
+    [self GET:[@"1.1/users/show.json?screen_name=" stringByAppendingString:screenName] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        User *newUser = [[User alloc] initWithDictionary:responseObject];
+        completion(newUser, nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        completion(nil, error);
+    }];
+}
+
 - (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId completion:(void (^)(Tweet *tweet, NSError *error))completion {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:status forKey:@"status"];

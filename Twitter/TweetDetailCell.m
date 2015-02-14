@@ -22,7 +22,8 @@
 @implementation TweetDetailCell
 
 - (void)awakeFromNib {
-    // Initialization code
+    self.profileImageView.layer.cornerRadius = 3;
+    self.profileImageView.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

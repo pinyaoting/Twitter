@@ -40,9 +40,11 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="9WR-D6-WSY" secondAttribute="bottom" constant="6" id="26p-p8-T3g"/>
                     <constraint firstAttribute="centerY" secondItem="sCk-TP-6oW" secondAttribute="centerY" id="2GG-Sm-8Wb"/>
                     <constraint firstItem="nrQ-VD-ZHS" firstAttribute="leading" secondItem="9WR-D6-WSY" secondAttribute="trailing" constant="8" id="52H-Iz-Y67"/>
                     <constraint firstItem="NQ2-dh-l7p" firstAttribute="leading" secondItem="sCk-TP-6oW" secondAttribute="trailing" constant="8" id="DOD-ix-ACM"/>
+                    <constraint firstItem="9WR-D6-WSY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="7" id="J0x-GM-wYB"/>
                     <constraint firstAttribute="centerY" secondItem="nrQ-VD-ZHS" secondAttribute="centerY" id="KTY-j5-1uY"/>
                     <constraint firstAttribute="centerY" secondItem="9WR-D6-WSY" secondAttribute="centerY" id="UCn-5l-hWK"/>
                     <constraint firstItem="sCk-TP-6oW" firstAttribute="leading" secondItem="nrQ-VD-ZHS" secondAttribute="trailing" constant="20" id="Z0A-Jp-PFX"/>

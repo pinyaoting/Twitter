@@ -27,6 +27,8 @@
 
 - (void)awakeFromNib {
     self.contentLabel.preferredMaxLayoutWidth = self.contentLabel.frame.size.width;
+    self.profileImageView.layer.cornerRadius = 3;
+    self.profileImageView.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

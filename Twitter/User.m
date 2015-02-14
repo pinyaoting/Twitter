@@ -28,13 +28,17 @@ NSString * const UserDidLogoutNotification = @"UserDidLogoutNotification";
         self.name = dictionary[@"name"];
         self.screenName = [@"@" stringByAppendingString:dictionary[@"screen_name"]];
         self.profileImageUrl = dictionary[@"profile_image_url"];
+        self.profileBannerImageUrl = [dictionary[@"profile_banner_url"] stringByAppendingString:@"/600x200"];
+        self.followersCount = [NSString stringWithFormat:@"%@", dictionary[@"followers_count"]];
+        self.friendsCount = [NSString stringWithFormat:@"%@", dictionary[@"friends_count"]];
+        self.tweetsCount = [NSString stringWithFormat:@"%@", dictionary[@"statuses_count"]];
         self.tagline = dictionary[@"description"];
     }
     
     return self;
 }
 
-static User* _currentUser = nil;
+static User *_currentUser = nil;
 
 NSString * const kCurrentUserKey = @"kCurrentUserKey";
 
@@ -68,6 +72,10 @@ NSString * const kCurrentUserKey = @"kCurrentUserKey";
     [[TwitterClient sharedInstance].requestSerializer removeAccessToken];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:UserDidLogoutNotification object:nil];
+}
+
++ (void)userDetailsWithScreenName:(NSString *)screenName completion:(void (^)(User *user, NSError *error))completion {
+    [[TwitterClient sharedInstance] userDetailsWithScreenName:screenName completion:completion];
 }
 
 @end

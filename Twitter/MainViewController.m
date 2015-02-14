@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "TweetsViewController.h"
+#import "UserProfileViewController.h"
 #import "UserProfileCell.h"
 #import "MenuCell.h"
 #import "User.h"
@@ -21,6 +22,7 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
 @property (weak, nonatomic) IBOutlet UITableView *hamburgerTableView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 
+@property (nonatomic, strong) UINavigationController *profileViewController;
 @property (nonatomic, strong) UINavigationController *timelineViewController;
 
 @property (nonatomic, strong) NSArray *menuItems;
@@ -58,6 +60,12 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     self.timelineViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
     self.timelineViewController.view.frame = self.contentView.frame;
     [self.contentView addSubview:self.timelineViewController.view];
+
+    UserProfileViewController *upvc = [[UserProfileViewController alloc] init];
+    [User userDetailsWithScreenName:[User currentUser].screenName completion:^(User *user, NSError *error) {
+        [upvc setUser:user];
+    }];
+    self.profileViewController = [[UINavigationController alloc] initWithRootViewController:upvc];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,6 +111,9 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 0) {
+//        [self.profileViewController willMoveToParentViewController:self];
+//        [self addChildViewController:self.profileViewController];
+        [self presentViewController:self.profileViewController animated:YES completion:nil];
         return;
     }
     

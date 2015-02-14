@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ys4-PU-717">
-                        <rect key="frame" x="38" y="11" width="22" height="22"/>
+                        <rect key="frame" x="38" y="10" width="22" height="22"/>
                         <state key="normal" image="reply.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -24,7 +24,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jg9-5P-VR2">
-                        <rect key="frame" x="149" y="11" width="22" height="22"/>
+                        <rect key="frame" x="149" y="10" width="22" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="22" id="pr8-hK-Bsp"/>
                             <constraint firstAttribute="height" constant="22" id="yhp-s0-Spu"/>
@@ -38,7 +38,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fwW-fB-uQ0">
-                        <rect key="frame" x="260" y="11" width="22" height="22"/>
+                        <rect key="frame" x="260" y="10" width="22" height="22"/>
                         <state key="normal" image="favorite.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -52,8 +52,10 @@
                     <constraint firstItem="Ys4-PU-717" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="30" id="1ao-FG-yCd"/>
                     <constraint firstAttribute="trailingMargin" secondItem="fwW-fB-uQ0" secondAttribute="trailing" constant="30" id="9e8-Bv-ZAm"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="width" secondItem="Jg9-5P-VR2" secondAttribute="width" id="Ind-Bg-JPl"/>
+                    <constraint firstItem="Jg9-5P-VR2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="2" id="L8Q-Po-o4V"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="centerY" secondItem="Jg9-5P-VR2" secondAttribute="centerY" id="Qhb-A2-lp6"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="width" secondItem="Ys4-PU-717" secondAttribute="width" id="UGO-ox-CZn"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Jg9-5P-VR2" secondAttribute="bottom" constant="2" id="eML-c6-Hqp"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="centerY" secondItem="Ys4-PU-717" secondAttribute="centerY" id="fvh-Al-CJP"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="height" secondItem="Jg9-5P-VR2" secondAttribute="height" id="isN-hI-4xO"/>
                     <constraint firstItem="fwW-fB-uQ0" firstAttribute="height" secondItem="Ys4-PU-717" secondAttribute="height" id="jov-Bw-PEg"/>
