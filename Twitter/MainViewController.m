@@ -12,7 +12,7 @@
 #import "MenuCell.h"
 #import "User.h"
 
-int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 120;
+int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
 
 @interface MainViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -34,6 +34,9 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 120;
     [super viewDidLoad];
     
     self.menuItems = @[@{@"icon": @"home.png", @"name": @"Home Timeline"}, @{@"icon": @"mention.png", @"name": @"Mentions"}];
+    
+    self.hamburgerTableView.layer.borderWidth = 1;
+    self.hamburgerTableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     [self.hamburgerTableView setSeparatorInset:UIEdgeInsetsZero];
     [self.hamburgerTableView setLayoutMargins:UIEdgeInsetsZero];
@@ -64,6 +67,10 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 120;
 
 #pragma mark - Table view methods
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 3;
 }
@@ -92,15 +99,36 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 120;
     return UITableViewAutomaticDimension;
 }
 
-//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    
-//    TweetDetailViewController *vc = [[TweetDetailViewController alloc] init];
-//    vc.tweet = self.tweets[indexPath.row];
-//    vc.delegate = self;
-//    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-//    [self presentViewController:nvc animated:YES completion:nil];
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 0) {
+        return;
+    }
+    
+    TweetsViewController *vc = (TweetsViewController *)self.timelineViewController.childViewControllers[0];
+    vc.timeline = indexPath.row - 1;
+    [vc onRefresh];
+    [self closeHamburgerView];
+}
+
+#pragma mark - Private methods
+
+- (void)openHamburgerView {
+    self.hamburgerViewLeftOffset.constant = 0;
+    self.hamburgerViewRightOffset.constant = HAMBURGERVIEW_RIGHT_OFFSET_MIN;
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
+        [self.view layoutIfNeeded];
+    } completion:nil];
+}
+
+- (void)closeHamburgerView {
+    self.hamburgerViewLeftOffset.constant = -self.hamburgerTableView.frame.size.width;
+    self.hamburgerViewRightOffset.constant = self.view.frame.size.width;
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
+        [self.view layoutIfNeeded];
+    } completion:nil];
+}
 
 - (IBAction)onPan:(UIPanGestureRecognizer *)panGestureRecognizer {
     CGPoint velocity = [panGestureRecognizer velocityInView:self.view];
@@ -115,17 +143,9 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 120;
         }
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
         if (velocity.x > 0) {
-            self.hamburgerViewLeftOffset.constant = 0;
-            self.hamburgerViewRightOffset.constant = HAMBURGERVIEW_RIGHT_OFFSET_MIN;
-            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
-                [self.view layoutIfNeeded];
-            } completion:nil];
+            [self openHamburgerView];
         } else if (velocity.x < 0) {
-            self.hamburgerViewLeftOffset.constant = -self.hamburgerTableView.frame.size.width;
-            self.hamburgerViewRightOffset.constant = self.view.frame.size.width;
-            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
-                [self.view layoutIfNeeded];
-            } completion:nil];
+            [self closeHamburgerView];
         }
         
     }

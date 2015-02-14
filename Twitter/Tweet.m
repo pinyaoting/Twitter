@@ -93,4 +93,8 @@
     [[TwitterClient sharedInstance] homeTimelineWithParams:params completion:completion];
 }
 
++ (void)tweetsFromMentionsTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
+    [[TwitterClient sharedInstance] mentionsTimelineWithParams:params completion:completion];
+}
+
 @end

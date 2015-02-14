@@ -47,8 +47,7 @@
 
 - (void)userDidLogin {
     MainViewController *vc = [[MainViewController alloc] init];
-    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    self.window.rootViewController = nvc;
+    self.window.rootViewController = vc;
 }
 
 - (void)userDidLogout {

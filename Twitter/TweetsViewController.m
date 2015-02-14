@@ -17,20 +17,34 @@
 @interface TweetsViewController () <UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate, TweetDetailViewControllerDelegate, TweetCellDelegate>
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray* tweets;
 
+@property (nonatomic, strong) NSMutableArray *tweets;
 @property (nonatomic, assign) BOOL isInBuffer;
+@property (nonatomic, strong) NSArray *twitterTimelineTitles;
+@property (copy) void (^reloadData)(NSArray *tweets, NSError *error);
+@property (copy) void (^appendData)(NSArray *tweets, NSError *error);
 
 @end
 
 @implementation TweetsViewController
 
+typedef enum {
+    TWITTER_HOME_TIMELINE,
+    TWITTER_MENTION_TIMELINE
+} TWITTER_TIMELINE;
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [SVProgressHUD showWithStatus:@"Loading"];
+
+    self.twitterTimelineTitles = @[@"Home", @"Mentions"];
+    
+    if (!self.timeline) {
+        self.timeline = TWITTER_HOME_TIMELINE;
+    }
     
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     [self.tableView setLayoutMargins:UIEdgeInsetsZero];
@@ -39,8 +53,9 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"TweetCell" bundle:nil] forCellReuseIdentifier:@"TweetCell"];
-    
-    self.title = @"Home";
+
+    self.title = self.twitterTimelineTitles[self.timeline];
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(onCompose)];
     
@@ -50,6 +65,9 @@
     
     self.isInBuffer = YES;
     
+    self.tweets = [NSMutableArray arrayWithCapacity:200];
+    
+    [self initCallback];
     [self onRefresh];
 }
 
@@ -59,6 +77,10 @@
 }
 
 #pragma mark - Table view methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.tweets.count;
@@ -88,6 +110,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < 19) {
+        return;
+    }
     if (indexPath.row == self.tweets.count - 1) {
         // make a call
         if (self.isInBuffer) {
@@ -125,6 +150,35 @@
 
 #pragma mark - Private methods
 
+- (void)initCallback {
+    __weak TweetsViewController *tvc = self;
+    
+    self.reloadData = ^(NSArray *tweets, NSError *error) {
+        if (error) {
+            return;
+        }
+        TweetsViewController *strongRetainedViewController = tvc;
+        strongRetainedViewController.isInBuffer = NO;
+        [SVProgressHUD dismiss];
+        [strongRetainedViewController.refreshControl endRefreshing];
+        strongRetainedViewController.tweets = [NSMutableArray arrayWithArray:tweets];
+        strongRetainedViewController.title = strongRetainedViewController.twitterTimelineTitles[strongRetainedViewController.timeline];
+        [strongRetainedViewController.tableView reloadData];
+    };
+    
+    self.appendData = ^(NSArray *tweets, NSError *error) {
+        if (error) {
+            return;
+        }
+        TweetsViewController *strongRetainedViewController = tvc;
+        strongRetainedViewController.isInBuffer = NO;
+        [SVProgressHUD dismiss];
+        [strongRetainedViewController.tweets addObjectsFromArray:tweets];
+        strongRetainedViewController.title = strongRetainedViewController.twitterTimelineTitles[strongRetainedViewController.timeline];
+        [strongRetainedViewController.tableView reloadData];
+    };
+}
+
 - (void)onCompose {
     ComposeViewController *vc = [[ComposeViewController alloc] init];
     vc.delegate = self;
@@ -136,26 +190,26 @@
     [User logout];
 }
 
+- (void)refreshWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
+    switch (self.timeline) {
+        case TWITTER_MENTION_TIMELINE:
+            [Tweet tweetsFromMentionsTimelineWithParams:nil completion:completion];
+            break;
+        default:
+            [Tweet tweetsFromHomeTimelineWithParams:nil completion:completion];
+            break;
+    }
+}
+
 - (void)onRefresh {
-    [Tweet tweetsFromHomeTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
-        self.isInBuffer = NO;
-        [self.refreshControl endRefreshing];
-        [SVProgressHUD dismiss];
-        self.tweets = [NSMutableArray arrayWithArray:tweets];
-        [self.tableView reloadData];
-    }];
+    [self refreshWithParams:nil completion:self.reloadData];
 }
 
 - (void)moreTweets {
     [SVProgressHUD showWithStatus:@"Loading"];
     NSInteger size = self.tweets.count - 1;
     Tweet *lastTweet = self.tweets[size];
-    [Tweet tweetsFromHomeTimelineWithParams:@{@"max_id": lastTweet.tweetId} completion:^(NSArray *tweets, NSError *error) {
-        self.isInBuffer = NO;
-        [SVProgressHUD dismiss];
-        [self.tweets addObjectsFromArray:tweets];
-        [self.tableView reloadData];
-    }];
+    [self refreshWithParams:@{@"max_id": lastTweet.tweetId} completion:self.appendData];
 }
 
 @end

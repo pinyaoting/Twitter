@@ -10,4 +10,8 @@
 
 @interface TweetsViewController : UIViewController
 
+@property (nonatomic, assign) NSInteger timeline;
+
+- (void)onRefresh;
+
 @end
