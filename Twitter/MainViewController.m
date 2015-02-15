@@ -15,7 +15,7 @@
 
 int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, TweetsViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hamburgerViewRightOffset;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *hamburgerViewLeftOffset;
@@ -54,7 +54,9 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     // Attach it to a view of your choice. If it's a UIImageView, remember to enable user interaction
     [self.view addGestureRecognizer:panGestureRecognizer];
     
-    self.timelineViewController = [[UINavigationController alloc] initWithRootViewController:[[TweetsViewController alloc] init]];
+    TweetsViewController *tvc = [[TweetsViewController alloc] init];
+    tvc.delegate = self;
+    self.timelineViewController = [[UINavigationController alloc] initWithRootViewController:tvc];
     self.timelineViewController.view.frame = self.contentView.frame;
     [self.contentView addSubview:self.timelineViewController.view];
 
@@ -114,6 +116,12 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     vc.timeline = indexPath.row - 1;
     [vc onRefresh];
     [self closeHamburgerView];
+}
+
+#pragma mark - TweetsViewControllerDelegate methods
+
+- (void)presentViewController:(UIViewController *)vc {
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma mark - Private methods

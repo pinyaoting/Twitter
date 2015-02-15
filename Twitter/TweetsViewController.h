@@ -8,9 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TweetsViewControllerDelegate <NSObject>
+
+- (void)presentViewController:(UIViewController *)vc;
+
+@end
+
 @interface TweetsViewController : UIViewController
 
 @property (nonatomic, assign) NSInteger timeline;
+@property (nonatomic, weak) id<TweetsViewControllerDelegate> delegate;
 
 - (void)onRefresh;
 

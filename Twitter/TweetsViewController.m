@@ -110,7 +110,7 @@ typedef enum {
     
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     
-    [self presentViewController:nvc animated:YES completion:nil];
+    [self.delegate presentViewController:nvc];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -135,14 +135,14 @@ typedef enum {
     vc.inReplyToScreenName = screenName;
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:nvc animated:YES completion:nil];
+    [self.delegate presentViewController:nvc];
 }
 
 - (void)tapOnProfileImageOfScreenName:(User *)user {
     UserProfileViewController *upvc = [[UserProfileViewController alloc] init];
     upvc.user = user;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:upvc];
-    [self presentViewController:nvc animated:YES completion:nil];    
+    [self.delegate presentViewController:nvc];
 }
 
 #pragma mark - Compose delegate methods
@@ -194,7 +194,7 @@ typedef enum {
     ComposeViewController *vc = [[ComposeViewController alloc] init];
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:nvc animated:YES completion:nil];
+    [self.delegate presentViewController:nvc];
 }
 
 - (void)onLogout {
