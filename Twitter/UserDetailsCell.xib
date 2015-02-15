@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="36" id="KGk-i7-Jjw" customClass="UserDetailsCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRr-5m-YGj">
+                        <rect key="frame" x="15" y="8" width="15" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRh-33-Rja">
+                        <rect key="frame" x="104" y="8" width="8" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="3412" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DuV-QV-0Mm">
+                        <rect key="frame" x="179" y="8" width="30" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzh-j3-zF3">
+                        <rect key="frame" x="38" y="8" width="58" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follwers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wu6-lE-B8A">
+                        <rect key="frame" x="120" y="8" width="51" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweets" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BNB-Wc-rvT">
+                        <rect key="frame" x="217" y="8" width="42" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TRr-5m-YGj" secondAttribute="bottom" constant="8" id="3OY-yd-hxl"/>
+                    <constraint firstItem="BNB-Wc-rvT" firstAttribute="leading" secondItem="DuV-QV-0Mm" secondAttribute="trailing" constant="8" id="7Nx-Dq-1g2"/>
+                    <constraint firstItem="BNB-Wc-rvT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="BFk-hw-Poq"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BNB-Wc-rvT" secondAttribute="trailing" constant="8" id="GsI-So-oyy"/>
+                    <constraint firstItem="DuV-QV-0Mm" firstAttribute="leading" secondItem="Wu6-lE-B8A" secondAttribute="trailing" constant="8" id="I50-LJ-3hs"/>
+                    <constraint firstItem="TRr-5m-YGj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="JGu-fR-Q8i"/>
+                    <constraint firstItem="Wu6-lE-B8A" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="JYc-MT-1R4"/>
+                    <constraint firstItem="oRh-33-Rja" firstAttribute="leading" secondItem="Qzh-j3-zF3" secondAttribute="trailing" constant="8" id="NYm-m3-mqs"/>
+                    <constraint firstItem="Wu6-lE-B8A" firstAttribute="leading" secondItem="oRh-33-Rja" secondAttribute="trailing" constant="8" id="XSu-zX-SkT"/>
+                    <constraint firstItem="DuV-QV-0Mm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="iYR-yF-2ag"/>
+                    <constraint firstItem="oRh-33-Rja" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="it3-ZB-0F1"/>
+                    <constraint firstItem="Qzh-j3-zF3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="rS2-k9-SZO"/>
+                    <constraint firstItem="Qzh-j3-zF3" firstAttribute="leading" secondItem="TRr-5m-YGj" secondAttribute="trailing" constant="8" id="rTw-oU-jCP"/>
+                    <constraint firstItem="TRr-5m-YGj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="z7y-qz-GGu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="followersCountLabel" destination="oRh-33-Rja" id="edX-Si-Gj3"/>
+                <outlet property="friendsCountLabel" destination="TRr-5m-YGj" id="d57-et-ojp"/>
+                <outlet property="tweetsCountLabel" destination="DuV-QV-0Mm" id="cLO-J5-i43"/>
+            </connections>
+            <point key="canvasLocation" x="429" y="303"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -47,14 +47,14 @@ typedef enum {
         self.timeline = TWITTER_HOME_TIMELINE;
     }
     
-    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView registerNib:[UINib nibWithNibName:@"TweetCell" bundle:nil] forCellReuseIdentifier:@"TweetCell"];
 
+    [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     self.title = self.twitterTimelineTitles[self.timeline];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(onLogout)];

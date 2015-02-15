@@ -29,6 +29,7 @@
 + (NSArray *)tweetsWithArray:(NSArray *)array;
 + (void)tweetsFromHomeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion;
 + (void)tweetsFromMentionsTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion;
++ (void)tweetsFromUserTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion;
 + (void)tweets:(NSString *)status inReplyToStatus:(NSString *)statusId completion:(void (^)(Tweet *tweet, NSError *error))completion;
 
 @end
