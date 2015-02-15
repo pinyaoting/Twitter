@@ -36,7 +36,7 @@
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
     
     // Attach it to a view of your choice. If it's a UIImageView, remember to enable user interaction
-    [self.tableView addGestureRecognizer:panGestureRecognizer];
+    [self.view addGestureRecognizer:panGestureRecognizer];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -144,7 +144,7 @@
     
     font= [UIFont systemFontOfSize:11];
     attributes = @{NSFontAttributeName: font};
-    CGRect screenNameLabelRect = [self.user.name boundingRectWithSize:CGSizeMake(self.screenWidth - 30, CGFLOAT_MAX)
+    CGRect screenNameLabelRect = [self.user.screenName boundingRectWithSize:CGSizeMake(self.screenWidth - 30, CGFLOAT_MAX)
                                         options:NSStringDrawingUsesLineFragmentOrigin
                                      attributes:attributes
                                         context:nil];
