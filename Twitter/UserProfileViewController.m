@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSArray* tweets;
 @property (nonatomic, strong) ProfileHeaderView *header;
 @property (nonatomic, assign) CGFloat screenWidth;
+@property (nonatomic, assign) CGPoint initialPosition;
+
+- (void)onPan:(UIPanGestureRecognizer *)panGestureRecognizer;
 
 @end
 
@@ -27,6 +30,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:self action:@selector(onHome)];
+    
+    
+    // The onCustomPan: method will be defined in Step 3 below.
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onPan:)];
+    
+    // Attach it to a view of your choice. If it's a UIImageView, remember to enable user interaction
+    [self.tableView addGestureRecognizer:panGestureRecognizer];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -92,7 +102,7 @@
 #pragma mark - Private methods
 
 - (void) reloadData {
-    [Tweet tweetsFromUserTimelineWithParams:nil completion:^(NSArray *tweets, NSError *error) {
+    [Tweet tweetsFromUserTimelineWithParams:@{@"screen_name": self.user.screenName} completion:^(NSArray *tweets, NSError *error) {
         self.tweets = tweets;
         [self.tableView reloadData];
     }];
@@ -170,11 +180,29 @@
     }];
 }
 
-#pragma mark - Private methods
-
 - (void)onHome {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)onPan:(UIPanGestureRecognizer *)panGestureRecognizer {
+    CGPoint translation = [panGestureRecognizer translationInView:self.view];
+    CGFloat deltaOfPosition = self.initialPosition.y - translation.y;
+    CGFloat large = 72.0;
+    CGFloat small = 48.0;
+    CGFloat deltaOfScaleInScalar = large - small;
+    CGFloat dowardScale = small / large;
+    CGFloat targetScale = deltaOfPosition / deltaOfScaleInScalar;
+    CGFloat scale = dowardScale * targetScale;
+    
+    if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        self.initialPosition = [panGestureRecognizer locationInView:self.view];
+    } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
+        if (targetScale < 1) {
+            self.header.profileImageView.transform = CGAffineTransformMakeScale(scale, scale);
+        }
+    } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        
+    }
+}
 
 @end

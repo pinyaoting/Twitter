@@ -27,10 +27,20 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
 
 @property (nonatomic, strong) NSArray *menuItems;
 @property (nonatomic, assign) CGFloat initialConstant;
+@property (nonatomic, assign) CGFloat screenWidth;
+
+@property (nonatomic, assign) BOOL hamburgerOpened;
 
 @end
 
 @implementation MainViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+    self.screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    if (!self.hamburgerOpened) {
+        [self closeHamburgerViewAnimated:NO];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -115,7 +125,7 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     TweetsViewController *vc = (TweetsViewController *)self.timelineViewController.childViewControllers[0];
     vc.timeline = indexPath.row - 1;
     [vc onRefresh];
-    [self closeHamburgerView];
+    [self closeHamburgerViewAnimated:YES];
 }
 
 #pragma mark - TweetsViewControllerDelegate methods
@@ -127,6 +137,7 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
 #pragma mark - Private methods
 
 - (void)openHamburgerView {
+    self.hamburgerOpened = YES;
     self.hamburgerViewLeftOffset.constant = 0;
     self.hamburgerViewRightOffset.constant = HAMBURGERVIEW_RIGHT_OFFSET_MIN;
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
@@ -134,9 +145,14 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     } completion:nil];
 }
 
-- (void)closeHamburgerView {
+- (void)closeHamburgerViewAnimated:(bool)animated {
+    self.hamburgerOpened = NO;
     self.hamburgerViewLeftOffset.constant = -self.hamburgerTableView.frame.size.width;
-    self.hamburgerViewRightOffset.constant = self.view.frame.size.width;
+    self.hamburgerViewRightOffset.constant = self.screenWidth;
+    if (!animated) {
+        [self.view layoutIfNeeded];
+        return;
+    }
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1.0 initialSpringVelocity:0 options:0 animations:^{
         [self.view layoutIfNeeded];
     } completion:nil];
@@ -157,7 +173,7 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
         if (velocity.x > 0) {
             [self openHamburgerView];
         } else if (velocity.x < 0) {
-            [self closeHamburgerView];
+            [self closeHamburgerViewAnimated:YES];
         }
         
     }
