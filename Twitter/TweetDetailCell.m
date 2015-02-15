@@ -46,6 +46,15 @@
     self.createdAtLabel.text = [_tweet.createdAt timeAgoSinceNow];
     self.contentLabel.text = _tweet.text;
     [self.contentLabel setPreferredMaxLayoutWidth:self.contentLabel.frame.size.width];
+    
+    // create tap gesture recognizer in profile image view
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    [self.profileImageView addGestureRecognizer:tapGestureRecognizer];
+    self.profileImageView.userInteractionEnabled = YES;
+}
+
+- (void)onTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    [self.delegate tapOnProfileImageOfScreenName:self.tweet.user];
 }
 
 @end

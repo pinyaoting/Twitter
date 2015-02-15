@@ -8,6 +8,7 @@
 
 #import "TweetDetailViewController.h"
 #import "ComposeViewController.h"
+#import "UserProfileViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSDate+DateTools.h"
 #import "TweetCell.h"
@@ -15,7 +16,7 @@
 #import "TweetCountCell.h"
 #import "TweetActionCell.h"
 
-@interface TweetDetailViewController () <UITableViewDataSource, UITableViewDelegate, TweetActionCellDelegate, ComposeViewControllerDelegate>
+@interface TweetDetailViewController () <UITableViewDataSource, UITableViewDelegate, TweetDetailCellDelegate, TweetActionCellDelegate, ComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray* replies;
@@ -61,7 +62,7 @@
     if (indexPath.row == 0) {
         TweetDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetDetailCell"];
         cell.tweet = self.tweet;
-        
+        cell.delegate = self;
         [cell setLayoutMargins:UIEdgeInsetsZero];
         return cell;
     } else if (indexPath.row == 1) {
@@ -90,6 +91,15 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+#pragma mark - Detail delegate methods
+
+- (void)tapOnProfileImageOfScreenName:(User *)user {
+    UserProfileViewController *upvc = [[UserProfileViewController alloc] init];
+    upvc.user = user;
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:upvc];
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 
 #pragma mark - Action delegate methods

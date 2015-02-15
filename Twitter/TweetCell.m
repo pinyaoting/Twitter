@@ -56,7 +56,6 @@
     
     // create tap gesture recognizer in profile image view
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
-    tapGestureRecognizer.numberOfTapsRequired = 1;
     [self.profileImageView addGestureRecognizer:tapGestureRecognizer];
     self.profileImageView.userInteractionEnabled = YES;
 }
