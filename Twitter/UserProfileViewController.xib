@@ -82,23 +82,16 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="r1S-aJ-sG1">
-                    <rect key="frame" x="0.0" y="307" width="320" height="261"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="dqP-Z6-qXf" firstAttribute="leading" secondItem="DgP-jZ-J64" secondAttribute="trailing" constant="8" id="17Y-gz-0cf"/>
                 <constraint firstItem="ngo-bf-kOa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="1Ac-kx-CpI"/>
-                <constraint firstItem="r1S-aJ-sG1" firstAttribute="top" secondItem="drX-Gu-UU4" secondAttribute="bottom" constant="15" id="1RZ-Yl-coc"/>
-                <constraint firstAttribute="bottom" secondItem="r1S-aJ-sG1" secondAttribute="bottom" id="1uF-4N-q6M"/>
                 <constraint firstItem="Kab-oa-dD8" firstAttribute="leading" secondItem="NfX-GZ-5bI" secondAttribute="leading" id="3IX-ak-bFA"/>
                 <constraint firstItem="ngo-bf-kOa" firstAttribute="top" secondItem="Kab-oa-dD8" secondAttribute="bottom" constant="8" id="3SV-Nh-ZBM"/>
                 <constraint firstItem="WrK-mn-FFr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4Tt-Po-y4D"/>
                 <constraint firstItem="ZQB-PK-SAu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="150" id="4Zd-yl-bXB"/>
                 <constraint firstItem="y1p-ZT-FTL" firstAttribute="baseline" secondItem="ngo-bf-kOa" secondAttribute="baseline" id="ARB-Ll-oCi"/>
-                <constraint firstAttribute="trailing" secondItem="r1S-aJ-sG1" secondAttribute="trailing" id="F8K-bF-xiR"/>
                 <constraint firstItem="Kab-oa-dD8" firstAttribute="leading" secondItem="ZQB-PK-SAu" secondAttribute="leading" id="SJf-vS-xbQ"/>
                 <constraint firstItem="y1p-ZT-FTL" firstAttribute="leading" secondItem="drX-Gu-UU4" secondAttribute="trailing" constant="8" id="SvX-LT-gPZ"/>
                 <constraint firstItem="drX-Gu-UU4" firstAttribute="leading" secondItem="4eQ-oO-eNK" secondAttribute="trailing" constant="20" id="Trq-oA-Swj"/>
@@ -108,7 +101,6 @@
                 <constraint firstAttribute="trailing" secondItem="WrK-mn-FFr" secondAttribute="trailing" id="af7-3Z-6HA"/>
                 <constraint firstItem="WrK-mn-FFr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="fWW-Ab-hNV"/>
                 <constraint firstItem="DgP-jZ-J64" firstAttribute="leading" secondItem="y1p-ZT-FTL" secondAttribute="trailing" constant="20" id="gfw-gW-240"/>
-                <constraint firstItem="r1S-aJ-sG1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hGz-qN-eIF"/>
                 <constraint firstItem="y1p-ZT-FTL" firstAttribute="baseline" secondItem="dqP-Z6-qXf" secondAttribute="baseline" id="jG9-tW-UYP"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dqP-Z6-qXf" secondAttribute="trailing" constant="8" id="kkP-LA-FV6"/>
                 <constraint firstItem="y1p-ZT-FTL" firstAttribute="baseline" secondItem="4eQ-oO-eNK" secondAttribute="baseline" id="m82-lI-vxQ"/>

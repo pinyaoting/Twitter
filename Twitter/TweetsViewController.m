@@ -9,6 +9,7 @@
 #import "TweetsViewController.h"
 #import "ComposeViewController.h"
 #import "TweetDetailViewController.h"
+#import "UserProfileViewController.h"
 #import "User.h"
 #import "Tweet.h"
 #import "TweetCell.h"
@@ -90,6 +91,7 @@ typedef enum {
     TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     cell.tweet = self.tweets[indexPath.row];
     cell.delegate = self;
+    
     [cell setLayoutMargins:UIEdgeInsetsZero];
     return cell;
 }
@@ -134,6 +136,13 @@ typedef enum {
     vc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nvc animated:YES completion:nil];
+}
+
+- (void)tapOnProfileImageOfScreenName:(User *)user {
+    UserProfileViewController *upvc = [[UserProfileViewController alloc] init];
+    upvc.user = user;
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:upvc];
+    [self presentViewController:nvc animated:YES completion:nil];    
 }
 
 #pragma mark - Compose delegate methods

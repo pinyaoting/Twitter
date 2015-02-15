@@ -11,7 +11,6 @@
 #import "NSDate+DateTools.h"
 
 @interface TweetCell()
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *screenNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createdAtLabel;
@@ -54,6 +53,12 @@
     self.favoriteCountLabel.text = _tweet.favoriteCount;
     self.retweetButton.selected = _tweet.retweeted;
     self.favoriteButton.selected = _tweet.favorited;
+    
+    // create tap gesture recognizer in profile image view
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    tapGestureRecognizer.numberOfTapsRequired = 1;
+    [self.profileImageView addGestureRecognizer:tapGestureRecognizer];
+    self.profileImageView.userInteractionEnabled = YES;
 }
 
 - (IBAction)onReply:(id)sender {
@@ -80,6 +85,10 @@
         [self.tweet unfavorite];
     }
     self.favoriteCountLabel.text = self.tweet.favoriteCount;
+}
+
+- (void)onTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    [self.delegate tapOnProfileImageOfScreenName:self.tweet.user];
 }
 
 @end

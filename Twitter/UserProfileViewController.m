@@ -28,8 +28,9 @@
     self.profileImageView.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profileImageView.layer.cornerRadius = 5;
     [self.profileImageView setClipsToBounds:YES];
-    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:self action:@selector(onHome)];
     [self updateUI];
+    [self updateUIAsync];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,22 +39,43 @@
 }
 
 - (void) updateUI {
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.user.profileBannerImageUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:5.0f];
-    [self.profileBannerImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [UIView transitionWithView:self.profileBannerImageView duration:1.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{ self.profileBannerImageView.image = image;
-        } completion:nil];
-    } failure:nil];
-
-    request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.user.profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"]] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:5.0f];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.user.profileImageUrl stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"]] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:5.0f];
     [self.profileImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         [UIView transitionWithView:self.profileImageView duration:1.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{ self.profileImageView.image = image;
         } completion:nil];
     } failure:nil];
     self.nameLabel.text = self.user.name;
     self.screenNameLabel.text = self.user.screenName;
-    self.friendsCountLabel.text = self.user.friendsCount;
-    self.followersCountLabel.text = self.user.followersCount;
-    self.tweetsCountLabel.text = self.user.tweetsCount;
+    [self hideLabels:YES];
 }
+
+- (void) updateUIAsync {
+    [User userDetailsWithScreenName:self.user.screenName completion:^(User *user, NSError *error) {
+        self.user = user;
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.user.profileBannerImageUrl] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:5.0f];
+        [self.profileBannerImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [UIView transitionWithView:self.profileBannerImageView duration:1.0f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{ self.profileBannerImageView.image = image;
+            } completion:nil];
+        } failure:nil];
+        self.friendsCountLabel.text = self.user.friendsCount;
+        self.followersCountLabel.text = self.user.followersCount;
+        self.tweetsCountLabel.text = self.user.tweetsCount;
+        [self hideLabels:NO];
+    }];
+}
+
+#pragma mark - Private methods
+
+- (void)hideLabels:(BOOL)hidden {
+    self.friendsCountLabel.hidden = hidden;
+    self.followersCountLabel.hidden = hidden;
+    self.tweetsCountLabel.hidden = hidden;
+}
+
+- (void)onHome {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end

@@ -37,9 +37,6 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     
     self.menuItems = @[@{@"icon": @"home.png", @"name": @"Home Timeline"}, @{@"icon": @"mention.png", @"name": @"Mentions"}];
     
-    self.hamburgerTableView.layer.borderWidth = 1;
-    self.hamburgerTableView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    
     [self.hamburgerTableView setSeparatorInset:UIEdgeInsetsZero];
     [self.hamburgerTableView setLayoutMargins:UIEdgeInsetsZero];
     self.hamburgerTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -62,9 +59,7 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     [self.contentView addSubview:self.timelineViewController.view];
 
     UserProfileViewController *upvc = [[UserProfileViewController alloc] init];
-    [User userDetailsWithScreenName:[User currentUser].screenName completion:^(User *user, NSError *error) {
-        [upvc setUser:user];
-    }];
+    upvc.user = [User currentUser];
     self.profileViewController = [[UINavigationController alloc] initWithRootViewController:upvc];
 }
 
@@ -111,8 +106,6 @@ int const HAMBURGERVIEW_RIGHT_OFFSET_MIN = 150;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.row == 0) {
-//        [self.profileViewController willMoveToParentViewController:self];
-//        [self addChildViewController:self.profileViewController];
         [self presentViewController:self.profileViewController animated:YES completion:nil];
         return;
     }
