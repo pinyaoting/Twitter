@@ -15,14 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="qAh-jn-4ha">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qAh-jn-4ha">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="qAh-jn-4ha" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Mfx-wz-FZl"/>
+                <constraint firstItem="qAh-jn-4ha" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Q4b-YU-cIj"/>
                 <constraint firstAttribute="trailing" secondItem="qAh-jn-4ha" secondAttribute="trailing" id="Q9G-4h-v6c"/>
                 <constraint firstAttribute="bottom" secondItem="qAh-jn-4ha" secondAttribute="bottom" id="VWN-Hp-v1a"/>
                 <constraint firstItem="qAh-jn-4ha" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jiQ-kq-jp6"/>

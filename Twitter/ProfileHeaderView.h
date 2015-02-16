@@ -10,9 +10,9 @@
 
 @interface ProfileHeaderView : UIView
 
-@property (strong, nonatomic) IBOutlet UIImageView *profileBannerView;
-@property (strong, nonatomic) IBOutlet UIImageView *profileImageView;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *screenNameLabel;
+@property (nonatomic, strong) IBOutlet UIImageView *profileBannerView;
+@property (nonatomic, strong) IBOutlet UIImageView *profileImageView;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *screenNameLabel;
 
 @end
