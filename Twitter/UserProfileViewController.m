@@ -14,11 +14,10 @@
 #import "Tweet.h"
 
 CGFloat const MIN_PROFILE_IMAGE_SCALE = 48.0/72.0;
-CGFloat const PROFILE_IMAGE_SCALE_COEFFICIENT = 200;
+CGFloat const PROFILE_IMAGE_SCALE_COEFFICIENT = 500;
 
 @interface UserProfileViewController () <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerYOffset;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSArray* tweets;
@@ -26,6 +25,7 @@ CGFloat const PROFILE_IMAGE_SCALE_COEFFICIENT = 200;
 @property (nonatomic, assign) CGFloat screenWidth;
 @property (nonatomic, assign) CGFloat initialConstant;
 @property (nonatomic, assign) CGPoint finalCenterOfProfileBanner;
+@property (nonatomic, assign) CGFloat currentProfileImageScale;
 
 - (void)onPan:(UIPanGestureRecognizer *)panGestureRecognizer;
 
@@ -165,10 +165,9 @@ CGFloat const PROFILE_IMAGE_SCALE_COEFFICIENT = 200;
     self.header.screenNameLabel.font = font;
     [self.header addSubview:self.header.screenNameLabel];
     
-  
-    // don't seem to have a way to make tableHeaderView in a tableview float, switching to custom view for now.
+    self.currentProfileImageScale = 1.0;
+    
      self.tableView.tableHeaderView = self.header;
-//    [self.headerView addSubview: self.header];
 }
 
 - (void) updateUIAsync {
@@ -200,18 +199,14 @@ CGFloat const PROFILE_IMAGE_SCALE_COEFFICIENT = 200;
 - (void)onPan:(UIPanGestureRecognizer *)panGestureRecognizer {
     CGPoint translation = [panGestureRecognizer translationInView:self.view];
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        self.initialConstant = self.headerYOffset.constant;
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
-        CGFloat scale = 1 + (translation.y / PROFILE_IMAGE_SCALE_COEFFICIENT);
-        if (scale > MIN_PROFILE_IMAGE_SCALE && scale < 1) {
-            self.header.profileImageView.transform = CGAffineTransformMakeScale(scale, scale);
-        }
-        CGFloat newOffset = self.initialConstant + translation.y;
-        if (newOffset > - 200 && newOffset <= 0) {
-            self.headerYOffset.constant = newOffset;
+        CGFloat profileImageScale = 1 + (translation.y / PROFILE_IMAGE_SCALE_COEFFICIENT);
+        CGFloat resultProfileImageScale = self.currentProfileImageScale * profileImageScale;
+        if (resultProfileImageScale >= MIN_PROFILE_IMAGE_SCALE && resultProfileImageScale <= 1) {
+            self.header.profileImageView.transform = CGAffineTransformMakeScale(profileImageScale, profileImageScale);
+            self.currentProfileImageScale = resultProfileImageScale;
         }
     } else if (panGestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        
     }
 }
 
