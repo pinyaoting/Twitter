@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Yahoo!, inc. All rights reserved.
 //
 
-#import "BDBOAuth1RequestOperationManager.h"
+#import <BDBOAuth1Manager/BDBOAuth1SessionManager.h>
 #import "User.h"
 #import "Tweet.h"
 
-@interface TwitterClient : BDBOAuth1RequestOperationManager
+@interface TwitterClient : BDBOAuth1SessionManager
 
 + (TwitterClient *)sharedInstance;
 

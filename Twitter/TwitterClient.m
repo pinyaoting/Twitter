@@ -53,12 +53,11 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
         [self.requestSerializer saveAccessToken:accessToken];
         
-        [self GET:@"1.1/account/verify_credentials.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self GET:@"1.1/account/verify_credentials.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             User *user = [[User alloc] initWithDictionary:responseObject];
             [User setCurrentUser:user];
-
             self.loginCompletion(user, nil);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"failed getting current user");
         }];
     } failure:^(NSError *error) {
@@ -68,37 +67,37 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 }
 
 - (void)homeTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
-    [self GET:@"1.1/statuses/home_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self GET:@"1.1/statuses/home_timeline.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSArray *tweets = [Tweet tweetsWithArray:responseObject];
         completion(tweets, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
     }];
 }
 
 - (void)mentionsTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
-    [self GET:@"1.1/statuses/mentions_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self GET:@"1.1/statuses/mentions_timeline.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSArray *tweets = [Tweet tweetsWithArray:responseObject];
         completion(tweets, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
     }];
 }
 
 - (void)userTimelineWithParams:(NSDictionary *)params completion:(void (^)(NSArray *tweets, NSError *error))completion {
-    [self GET:@"1.1/statuses/user_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self GET:@"1.1/statuses/user_timeline.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSArray *tweets = [Tweet tweetsWithArray:responseObject];
         completion(tweets, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
     }];
 }
 
 - (void)userDetailsWithScreenName:(NSString *)screenName completion:(void (^)(User *user, NSError *error))completion {
-    [self GET:[@"1.1/users/show.json?screen_name=" stringByAppendingString:screenName] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self GET:[@"1.1/users/show.json?screen_name=" stringByAppendingString:screenName] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         User *newUser = [[User alloc] initWithDictionary:responseObject];
         completion(newUser, nil);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, error);
     }];
 }
@@ -109,14 +108,14 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
     if (statusId != nil) {
         [params setObject:statusId forKey:@"in_reply_to_status_id"];
     }
-    [self POST:@"1.1/statuses/update.json" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:@"1.1/statuses/update.json" parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
         completion(tweet, nil);
     } failure:nil];
 }
 
 - (void)retweet:(NSString *)tweetId completion:(void (^)(Tweet *tweet, NSError *error))completion {
-    [self POST:[@"1.1/statuses/retweet/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:[@"1.1/statuses/retweet/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         Tweet *tweet = [[Tweet alloc] initWithDictionary:responseObject];
         completion(tweet, nil);
     } failure:nil];
@@ -125,7 +124,7 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 - (void)untweet:(NSString *)tweetId origTweet:(Tweet *)origTweet {
     // un-retweeting in same session which the tweet got re-tweeted, so re-tweetId is availible for un-retweet.
     if (tweetId != nil) {
-        [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweetId stringByAppendingString:@".json"]] parameters:nil progress:nil success:nil failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             [self unretweetByLookup:origTweet];
         }];
         return;
@@ -136,11 +135,11 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
 - (void)unretweetByLookup:(Tweet *)origTweet {
     // try finding the re-tweeted tweet from user timeline
-    [self GET:@"1.1/statuses/user_timeline.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self GET:@"1.1/statuses/user_timeline.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSArray *tweets = [Tweet tweetsWithArray:responseObject];
         for (Tweet *tweet in tweets) {
             if ([tweet.text isEqualToString:origTweet.text]) {
-                [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweet.tweetId stringByAppendingString:@".json"]] parameters:nil success:nil failure:nil];
+                [self POST:[@"1.1/statuses/destroy/" stringByAppendingString:[tweet.tweetId stringByAppendingString:@".json"]] parameters:nil progress:nil success:nil failure:nil];
             }
         }
     } failure:nil];
@@ -148,12 +147,12 @@ NSString * const kTwitterBaseUrl = @"https://api.twitter.com";
 
 - (void)favorite:(NSString *)tweetId {
     NSDictionary *params = [NSDictionary dictionaryWithObject:tweetId forKey:@"id"];
-    [self POST:@"1.1/favorites/create.json" parameters:params success:nil failure:nil];
+    [self POST:@"1.1/favorites/create.json" parameters:params progress:nil success:nil failure:nil];
 }
 
 - (void)unfavorite:(NSString *)tweetId {
     NSDictionary *params = [NSDictionary dictionaryWithObject:tweetId forKey:@"id"];
-    [self POST:@"1.1/favorites/destroy.json" parameters:params success:nil failure:nil];
+    [self POST:@"1.1/favorites/destroy.json" parameters:params progress:nil success:nil failure:nil];
 }
 
 @end
